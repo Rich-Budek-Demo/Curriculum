@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OnLine Curriculum - Speaker Notes</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+
+<h1>TinkRworks - Speaker Notes</h1>
+<div>
+    <p><span> </span></p>
+    <p><span> </span></p>
+</div>
+<div id="slideNumDiv">
+    <h3>
+        <p><span>Current Slide </span></p>
+    </h3>
+    <h2>
+        <p id="slideNum"> </p>
+    </h2>
+</div>
+<div id="elapsedTime"></div>
+
+<!--  load jquery  -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+    var startTime = 0;
+    var prevSlideNum = 0;
+
+    $(document).ready(function() {
+        console.log("Document is ready");
+        window.addEventListener("message", (event) => {
+            //if (event.origin === window.location.origin) {
+                if (startTime == 0) {
+                    startTime = Date.now();
+                } else {
+                    //let divSlideNum = $("#slideNum");
+                    //divSlideNum.children().remove();
+                    let slideNumCurr = String(event.data);
+                    let pSlideNum = $("#slideNum").html("<span>" + slideNumCurr + "</span>");
+                    console.log(pSlideNum);
+                    //divSlideNum.append(pSlideNum);
+
+                    let elapTime = Math.floor(Date.now() - startTime);
+                    startTime = Date.now();
+
+                    let pElapTime = $("<p>");
+                    pElapTime.html("<span>" + String(prevSlideNum) + " - " + String(elapTime) + "<br /></span>");
+                    $('#elapsedTime').append(pElapTime);
+                    prevSlideNum = parseInt(slideNumCurr);
+
+                    console.log("Elapased time = ", elapTime);                
+                }
+                console.log("Message: ", event.data);
+            //}
+        });        
+        //$("#slides").attr('src', 'https://docs.google.com/presentation/d/1ox2v7BP6Hc1vGPL7aeeJehVoaacg6KPc/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1920" height="1109" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"');
+    });
+</script>
+
+
+</body>
+</html>

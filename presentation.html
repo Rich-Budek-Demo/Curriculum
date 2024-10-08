@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OnLine Curriculum - iSpring</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+
+<h1>TinkRworks - Presentation</h1>
+<div style="max-width: 960px; max-height: 600px; width: 960px; height: 600px;" >
+    <iframe id="presentation" src="present1/index.html" style="width: 100%; height: 100%;"></iframe>
+</div>
+<!--
+<iframe id="slides" src="https://docs.google.com/presentation/d/1sX6MwKLS5LH8-pZE32sBelH79EXzqyBnHkMagPBhDeg/embed?usp=sharing&start=false&loop=false&delayms=3000" frameborder="0" width="1920" height="1109" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+-->
+
+<!--  load jquery  -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+    const newTab = window.open("speakernotes.html", "_blank", "popup=true, menubar=fase, resizeable=true, scrollbars=true");
+    //const newTab = window.open("speakernotes.html", "_blank");
+    window.focus();
+    var slideNum = 0;
+
+    var ispringPresentationConnector = {};
+    ispringPresentationConnector.register = function(player)
+        {
+            console.log("Player initialized");
+
+            player.view().playbackController().slideChangeEvent().addHandler(function(slideIndex) {
+            console.log("Slide changed: " + slideIndex);
+            slideNum$ = String(slideIndex);
+            newTab.postMessage(slideNum$, "*");
+            });
+        }
+
+    $(document).ready(function() {
+        console.log("Document is ready");
+        console.log("-- new tab is opened --");
+        //setInterval(myTimer, 3000);
+        /*
+        function myTimer() {
+            //let currentSrc = $("#slides") //.contentWindow  //.location.href
+            console.log("sendingMessage");
+            console.log(slideNum);
+            slideNum$ = String(slideNum);
+            newTab.postMessage(slideNum$, "*");
+            slideNum = slideNum +1;
+        }
+        */
+        
+        //$("#slides").attr('src', 'https://docs.google.com/presentation/d/1ox2v7BP6Hc1vGPL7aeeJehVoaacg6KPc/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1920" height="1109" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"');
+    })
+</script>
+
+
+</body>
+</html>

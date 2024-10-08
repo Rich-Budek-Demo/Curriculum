@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Presentation Event Listening sample</title>
+    <!--
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+    -->
+    <meta name="viewport" content="width=1920,height=1080,initial-scale=1,maximum-scale=10"/>
+    <link rel="stylesheet" type="text/css" href="style/presentation_event_listening.css">
+</head>
+<body>
+<div style="width: 1920px; height: 1080px; display:block;">
+    <iframe id="frame" src="present1/index.html" width="1920" height="1080"></iframe>
+</div>
+<div id="logger"></div>
+
+<script>
+    function log(text)
+    {
+        var logger = document.getElementById("logger");
+        logger.innerHTML = logger.innerHTML + text + '\n';
+    }
+
+    var ispringPresentationConnector = {};
+    ispringPresentationConnector.register = function(player)
+    {
+        log("Player initialized");
+
+        player.view().playbackController().slideChangeEvent().addHandler(function(slideIndex) {
+            log("Slide changed: " + slideIndex);
+        });
+    }
+</script>
+</body>
+</html>

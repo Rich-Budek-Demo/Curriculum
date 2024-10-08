@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OnLine Curriculum - Speaker Notes</title>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+
+<h1>TinkRworks - Speaker Notes</h1>
+<div>
+    <p><span> </span></p>
+    <p><span> </span></p>
+</div>
+<div id="slideNumDiv">
+    <h3>
+        <p><span>Current Slide </span></p>
+    </h3>
+    <h4>
+        <p id="slideNum"> </p>
+    </h4>
+</div>
+<div id="notesDiv" style="max-width: 800px; max-height: 200px; width: 800px; height: 200px;">
+    <h2>
+        <p id="notes"></p>
+    </h2>
+</div>
+<div id="elapsedTime"></div>
+
+<!--  load jquery  -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+    var startTime = 0;
+    var prevSlideNum = 0;
+    var currSlideNum = 0;
+    const speakerNotes = new Map()
+
+    function updateSlideNum(){
+        let elapTime = Math.floor(Date.now() - startTime)/1000.0;
+        elapTimeStr = elapTime.toFixed(1) + " secs"
+        //let divSlideNum = $("#slideNumDiv");
+        //divSlideNum.children().remove();
+        currSlideNumStr = currSlideNum.toString();
+        let pSlideNum = $("#slideNum").html("<span>" + currSlideNumStr + " = " + elapTimeStr + "</span>");
+        let notes = $("#notes").html("<span>" + speakerNotes.get(currSlideNum) + "</span>");
+        //divSlideNum.append(pSlideNum);
+    }
+
+    function loadSpeakerNotes(){
+        speakerNotes.set(0, "Use <em>left</em> mouse click to go forward, <br/><em>arrow keys</em> to navigate forward or backward. <br />Can <u>style</u> text<br/>Remember to mention what that this is a demo deck to test iSpring.");
+        speakerNotes.set(1, "Slide shows that Python code is readable<br/> and animations work");
+        speakerNotes.set(2, "<u>Two</u> videos with sound. <br />The smaller one plays first <br />then the second one plays");
+        speakerNotes.set(3, "Embedded YouTube. Audio plays and can maximize.");
+        speakerNotes.set(4, "Path animations are translated also.");
+        speakerNotes.set(5, "Each animation starts with a mouse click.");
+        speakerNotes.set(6, "Red and green mixing, looks like same slide but it's the next one.");
+        speakerNotes.set(7, "Using variables");
+        speakerNotes.set(8, "Changing variables");
+        speakerNotes.set(9, "");
+        speakerNotes.set(10, "");
+        speakerNotes.set(11, "");
+        speakerNotes.set(12, "");
+        speakerNotes.set(13, "At the end of the slide show. <br />Can click the hyperlink to get back to slide 0");
+    }
+
+
+    $(document).ready(function() {
+        console.log("Document is ready");
+        loadSpeakerNotes();
+        console.log("Speaker notes loaded.");
+        console.log(speakerNotes);
+        if (startTime == 0) {
+            startTime = Date.now();
+        };
+        window.addEventListener("message", (event) => {
+            //if (event.origin === window.location.origin) {
+                if (startTime == 0) {
+                    startTime = Date.now();
+                } else {
+                    //let divSlideNum = $("#slideNum");
+                    //divSlideNum.children().remove();
+                    let slideNumCurr = String(event.data);
+                    currSlideNum = parseInt(event.data);
+                    updateSlideNum();
+                    //let pSlideNum = $("#slideNum").html("<span>" + slideNumCurr + "</span>");
+                    //console.log(pSlideNum);
+                    //divSlideNum.append(pSlideNum);
+
+                    let elapTime = Math.floor(Date.now() - startTime) / 1000.0;
+                    elapTimeMin = elapTime / 60.0
+                    elapTimeStr = elapTime.toFixed(1) + " secs = " + elapTimeMin.toFixed(2) + " min";
+                    
+                    startTime = Date.now();
+
+                    let pElapTime = $("<p>");
+                    pElapTime.html("<span>" + String(prevSlideNum) + " - " + elapTimeStr + "<br /></span>");
+                    $('#elapsedTime').append(pElapTime);
+                    prevSlideNum = parseInt(slideNumCurr);
+
+                    console.log("Elapased time = ", elapTime); 
+                    console.log(speakerNotes.get(currSlideNum));             
+                }
+                console.log("Message: ", event.data);
+            //}
+        });       
+        
+        
+        setInterval(myTimer, 1000);
+        function myTimer() {
+            //just update the timer
+            updateSlideNum();
+        }
+        
+
+        //$("#slides").attr('src', 'https://docs.google.com/presentation/d/1ox2v7BP6Hc1vGPL7aeeJehVoaacg6KPc/embed?start=false&loop=false&delayms=3000" frameborder="0" width="1920" height="1109" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"');
+    });
+</script>
+
+
+</body>
+</html>
