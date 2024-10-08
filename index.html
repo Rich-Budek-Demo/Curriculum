@@ -11,16 +11,21 @@
     <h1>TinkRworks - Sample Curriculum</h1>
     <h2>This is a demonstration of having curriculum loaded and running WITHOUT PowerPoint or Google Slides.</h2>
     <h2>Just click the button, make sure you enable popups on the address bar when it shows up.</h2>
-    <button id="startPresentation" onclick="startPresentation()">Start Presentation</button>
+    <button id="startPresentationLow" onclick="startPresentation('true')" data-lowres="true"><h2>Start LowRes Presentation</h2></button>
+    <button id="startPresentationHigh" onclick="startPresentation('false')" data-lowres="false"><h2>Start HighRes Presentation</h2></button>
 </div>
 
 <!--  load jquery  -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script>
-    function startPresentation(e) {
-        e = e || window.event;
-        e.preventDefault();
-        window.location.href = "presentation.html"
+    function startPresentation(lowRes) {
+        //event = event || window.event;
+        //event.preventDefault();
+        console.log("clicked the button");
+        //let lowRes = event.target.getAttribute('data-lowres');
+        console.log(lowRes);
+        //event.isDefaultPrevented = function(){ return false; }
+        window.location.href = "presentation.html?lowres=" + lowRes
     } 
     
     $(document).ready(function() {
