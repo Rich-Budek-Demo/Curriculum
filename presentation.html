@@ -56,8 +56,12 @@
         let lowRes = urlParams.get('lowres');
         if (lowRes == 'true') {
             $("#presentation").attr('src', 'present_low/index.html');
-        } else {
+        } else if (lowRes == 'false') {
             $("#presentation").attr('src', 'present_high/index.html');
+        }  else if (lowRes == '3') {
+            $("#presentation").attr('src', 'present3/index.html');
+        } else if (lowRes == '4') {
+            $("#presentation").attr('src', 'present4/index.html');
         }
     })
 </script>
