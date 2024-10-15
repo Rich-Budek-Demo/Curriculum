@@ -23,6 +23,7 @@
     //const newTab = window.open("speakernotes.html", "_blank");
     window.focus();
     var slideNum = 0;
+    var ranOnce = false;
 
     var ispringPresentationConnector = {};
     ispringPresentationConnector.register = function(player)
@@ -30,9 +31,19 @@
             console.log("Player initialized");
 
             player.view().playbackController().slideChangeEvent().addHandler(function(slideIndex) {
-            console.log("Slide changed: " + slideIndex);
-            slideNum$ = String(slideIndex);
-            newTab.postMessage(slideNum$, "*");
+                if (ranOnce) {
+                    console.log("already ran");
+                    console.log("Slide changed: " + slideIndex);
+                    slideNum$ = String(slideIndex);
+                    newTab.postMessage(slideNum$, "*");
+                } else {
+                    console.log("first time thru loop");
+                    ranOnce = true;
+                    let urlParams = new URLSearchParams(window.location.search);
+                    let slideNumStr = urlParams.get('slide');
+                    slideNum = parseInt(slideNumStr)
+                    player.view().playbackController().gotoSlide(slideNum);
+                }
             });
         }
 
@@ -55,12 +66,16 @@
         let urlParams = new URLSearchParams(window.location.search);
         let lowRes = urlParams.get('lowres');
         if (lowRes == 'true') {
-            $("#presentation").attr('src', 'present_low/index.html');
+            $("#presentation").attr('src', 'present1/index.html');
         } else if (lowRes == 'false') {
-            $("#presentation").attr('src', 'present_high/index.html');
+            $("#presentation").attr('src', 'present2/index.html');
         }  else if (lowRes == '3') {
             $("#presentation").attr('src', 'present3/index.html');
         } else if (lowRes == '4') {
+            $("#presentation").attr('src', 'present4/index.html');
+        } else if (lowRes == '5') {
+            $("#presentation").attr('src', 'present4/index.html');
+        } else if (lowRes == '6') {
             $("#presentation").attr('src', 'present4/index.html');
         }
     })
